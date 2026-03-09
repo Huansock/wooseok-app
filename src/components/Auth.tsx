@@ -52,11 +52,11 @@ export default function Auth() {
         return (
             <View style={styles.verificationContainer}>
                 <Text style={styles.verificationIcon}>📬</Text>
-                <Text style={styles.verificationTitle}>이메일을 확인해주세요</Text>
+                <Text style={styles.verificationTitle}>Check your email</Text>
                 <Text style={styles.verificationSubtitle}>
+                    {'We sent a verification link to\n'}
                     <Text style={styles.emailHighlight}>{email}</Text>
-                    {'\n'}으로 인증 링크를 보냈습니다.{'\n'}
-                    링크를 클릭하면 로그인됩니다.
+                    {'\nClick the link to sign in.'}
                 </Text>
                 <TouchableOpacity
                     style={styles.backButton}
@@ -66,7 +66,7 @@ export default function Auth() {
                         setPassword('')
                     }}
                 >
-                    <Text style={styles.backButtonText}>← 로그인으로 돌아가기</Text>
+                    <Text style={styles.backButtonText}>← Back to Sign in</Text>
                 </TouchableOpacity>
             </View>
         )

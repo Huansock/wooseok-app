@@ -62,7 +62,7 @@ export default function Account({ session }: { session: Session }) {
                 throw error
             }
             if (!data || data.length === 0) {
-                throw new Error('업데이트된 항목이 없습니다.')
+                throw new Error('No rows were updated.')
             }
         } catch (error) {
             if (error instanceof Error) {

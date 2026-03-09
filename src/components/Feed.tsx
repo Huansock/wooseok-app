@@ -46,7 +46,7 @@ export default function Feed() {
     if (pages.length === 0) {
         return (
             <View style={styles.center}>
-                <Text style={styles.emptyText}>아직 페이지가 없습니다.</Text>
+                <Text style={styles.emptyText}>No pages yet.</Text>
             </View>
         )
     }
@@ -59,7 +59,7 @@ export default function Feed() {
             renderItem={({ item }) => (
                 <View style={styles.card}>
                     <Markdown style={markdownStyles}>{item.md_text}</Markdown>
-                    <Text style={styles.author}>written by {item.profiles?.username ?? '알 수 없음'}</Text>
+                    <Text style={styles.author}>written by {item.profiles?.username ?? 'Unknown'}</Text>
                     <Text style={styles.meta}>{new Date(item.created_at).toLocaleString()}</Text>
                 </View>
             )}

@@ -63,7 +63,7 @@ export default function App() {
                     onPress={() => setActiveTab('feed')}
                 >
                     <Text style={[styles.tabIcon, activeTab === 'feed' && styles.tabIconActive]}>🏠</Text>
-                    <Text style={[styles.tabLabel, activeTab === 'feed' && styles.tabLabelActive]}>피드</Text>
+                    <Text style={[styles.tabLabel, activeTab === 'feed' && styles.tabLabelActive]}>Feed</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -78,7 +78,7 @@ export default function App() {
                     onPress={() => setActiveTab('account')}
                 >
                     <Text style={[styles.tabIcon, activeTab === 'account' && styles.tabIconActive]}>👤</Text>
-                    <Text style={[styles.tabLabel, activeTab === 'account' && styles.tabLabelActive]}>계정</Text>
+                    <Text style={[styles.tabLabel, activeTab === 'account' && styles.tabLabelActive]}>Account</Text>
                 </TouchableOpacity>
             </View>
         </View>

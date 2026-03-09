@@ -14,7 +14,7 @@ export default function PageEditor({ session, onClose }: Props) {
 
     async function handleSubmit() {
         if (!text.trim()) {
-            Alert.alert('내용을 입력해주세요.')
+            Alert.alert('Please enter some content.')
             return
         }
 
@@ -25,7 +25,7 @@ export default function PageEditor({ session, onClose }: Props) {
         })
 
         if (error) {
-            Alert.alert('저장 실패', error.message)
+            Alert.alert('Failed to save', error.message)
         } else {
             setText('')
             onClose()
@@ -37,15 +37,15 @@ export default function PageEditor({ session, onClose }: Props) {
         <View style={styles.overlay}>
             <View style={styles.sheet}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>새 페이지 작성</Text>
+                    <Text style={styles.title}>Write a Page</Text>
                     <TouchableOpacity onPress={onClose}>
-                        <Text style={styles.cancel}>취소</Text>
+                        <Text style={styles.cancel}>Cancel</Text>
                     </TouchableOpacity>
                 </View>
 
                 <TextInput
                     style={styles.input}
-                    placeholder="내용을 입력하세요..."
+                    placeholder="Write something..."
                     multiline
                     value={text}
                     onChangeText={setText}
@@ -57,7 +57,7 @@ export default function PageEditor({ session, onClose }: Props) {
                     onPress={handleSubmit}
                     disabled={loading}
                 >
-                    <Text style={styles.submitText}>{loading ? '저장 중...' : '게시'}</Text>
+                    <Text style={styles.submitText}>{loading ? 'Saving...' : 'Post'}</Text>
                 </TouchableOpacity>
             </View>
         </View>
