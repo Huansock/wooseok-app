@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native'
 import Markdown from 'react-native-markdown-display'
-import { supabase } from '../lib/supabase'
+import { useSession } from '../../../lib/session-context'
+import { registerPushSubscription } from '../../../lib/push'
+import { supabase } from '../../../lib/supabase'
 
 type Page = {
     id: string
@@ -9,17 +11,19 @@ type Page = {
     book_id: string
     md_text: string
     created_at: string
-    profiles: {
-        username: string | null
-    } | null
+    profiles: { username: string | null } | null
 }
 
-export default function Feed() {
+export default function FeedScreen() {
     const [pages, setPages] = useState<Page[]>([])
     const [loading, setLoading] = useState(true)
+    const { session } = useSession()
 
     useEffect(() => {
         fetchPages()
+        if (session?.user.id) {
+            registerPushSubscription(session.user.id)
+        }
     }, [])
 
     async function fetchPages() {
@@ -29,9 +33,7 @@ export default function Feed() {
             .select('*, profiles(username)')
             .order('created_at', { ascending: true })
 
-        if (!error && data) {
-            setPages(data)
-        }
+        if (!error && data) setPages(data)
         setLoading(false)
     }
 
@@ -85,10 +87,6 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 16,
     },
-    text: {
-        fontSize: 15,
-        marginBottom: 8,
-    },
     meta: {
         fontSize: 12,
         color: '#999',
@@ -100,7 +98,6 @@ const styles = StyleSheet.create({
     },
 })
 
-// react-native-markdown-display는 일반 객체로 스타일을 받음
 const markdownStyles = {
     body: {
         fontSize: 15,

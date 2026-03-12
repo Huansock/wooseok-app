@@ -1,22 +1,21 @@
-import { Session } from '@supabase/supabase-js'
+import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { useSession } from '../lib/session-context'
 import { supabase } from '../lib/supabase'
 
-type Props = {
-    session: Session
-    onClose: () => void
-}
-
-export default function PageEditor({ session, onClose }: Props) {
+export default function WriteScreen() {
     const [text, setText] = useState('')
     const [loading, setLoading] = useState(false)
+    const router = useRouter()
+    const { session } = useSession()
 
     async function handleSubmit() {
         if (!text.trim()) {
             Alert.alert('Please enter some content.')
             return
         }
+        if (!session) return
 
         setLoading(true)
         const { error } = await supabase.from('pages').insert({
@@ -28,50 +27,43 @@ export default function PageEditor({ session, onClose }: Props) {
             Alert.alert('Failed to save', error.message)
         } else {
             setText('')
-            onClose()
+            router.back()
         }
         setLoading(false)
     }
 
     return (
-        <View style={styles.overlay}>
-            <View style={styles.sheet}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>Write a Page</Text>
-                    <TouchableOpacity onPress={onClose}>
-                        <Text style={styles.cancel}>Cancel</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Write something..."
-                    multiline
-                    value={text}
-                    onChangeText={setText}
-                    autoFocus
-                />
-
-                <TouchableOpacity
-                    style={[styles.submitButton, loading && styles.disabled]}
-                    onPress={handleSubmit}
-                    disabled={loading}
-                >
-                    <Text style={styles.submitText}>{loading ? 'Saving...' : 'Post'}</Text>
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <Text style={styles.title}>Write a Page</Text>
+                <TouchableOpacity onPress={() => router.back()}>
+                    <Text style={styles.cancel}>Cancel</Text>
                 </TouchableOpacity>
             </View>
+
+            <TextInput
+                style={styles.input}
+                placeholder="Write something..."
+                multiline
+                value={text}
+                onChangeText={setText}
+                autoFocus
+            />
+
+            <TouchableOpacity
+                style={[styles.submitButton, loading && styles.disabled]}
+                onPress={handleSubmit}
+                disabled={loading}
+            >
+                <Text style={styles.submitText}>{loading ? 'Saving...' : 'Post'}</Text>
+            </TouchableOpacity>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    overlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0,0,0,0.4)',
-        justifyContent: 'flex-end',
-        zIndex: 10,
-    },
-    sheet: {
+    container: {
+        flex: 1,
         backgroundColor: '#fff',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
@@ -82,6 +74,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        paddingTop: 12,
     },
     title: {
         fontSize: 18,
@@ -92,7 +85,7 @@ const styles = StyleSheet.create({
         color: '#888',
     },
     input: {
-        minHeight: 140,
+        flex: 1,
         borderWidth: 1,
         borderColor: '#e0e0e0',
         borderRadius: 10,
